@@ -1,0 +1,5 @@
+- capturar errores
+
+- el stop debe matar todos los procesos corriendo e 
+informar si no pudo o si habia 
+mas de un proceso corriendo

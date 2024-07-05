@@ -1,0 +1,6 @@
+{
+    "hblPath": "/usr/programas/hbl",
+    "startOnBoot": false,
+    "kioskMode": false,
+    "kioskURL": "https://www.google.com"
+}
