@@ -1,16 +1,18 @@
 
+from datetime import datetime
 import json
 from PyQt5.QtGui import * 
 from PyQt5.QtWidgets import * 
 from PyQt5.QtCore import *
 
 from ui.Ui_VentanaPrincipal import Ui_MainWindow
-from utils.CheckStatusHBL import getHBLpid, isHBLrunning
+from utils.CheckStatusHBL import checkErrors, getHBLpid, isHBLrunning
 from utils.ConfigManager import ConfigManager
 from utils.StartOnBoot import disableKioscMode, disableStartOnBoot, enableKioscMode, enableStartOnBoot, isKioscModeEnabled, isStartOnBootEnabled
 from utils.Terminal import Terminal
 from utils.GetCurrenPath import getRootPath
 
+from ventanas.MyQDialog import MyQDialog
 from ventanas.SystemTrayIcon import SystemTrayIcon
 from ventanas.MyQtreeWidget import MyQtreeWidget
 
@@ -22,7 +24,7 @@ class Estados(Enum):
     CORRIENDO = 0
     DETENIDO  = 1
     REINICIANDO =2
-    
+    ERROR = 3
 
 class VentanaPrincipal(QMainWindow):
     def __init__(self):
@@ -35,6 +37,7 @@ class VentanaPrincipal(QMainWindow):
         self.tray = SystemTrayIcon(QIcon(image),self)
         self.setWindowIcon(QIcon(image))
         
+        self.status = Estados.DETENIDO
         
         self.treeFiles = MyQtreeWidget(self.ui.logs_treeWidget)
         self.tray.show()
@@ -46,7 +49,8 @@ class VentanaPrincipal(QMainWindow):
         self.ui.openFiles_pushButton.clicked.connect(self.hblPathChanged)
         self.ui.path_lineEdit.setText(self.config.get('hblPath'))
         self.ui.url_lineEdit.setText(self.config.get('kioskURL'))
-        
+        self.ui.status_lineEdit.setText(f'Detenido')
+
         self.readFiles()
         self.updateHBLStatus()
         self.iniciarTimerStatus()
@@ -142,10 +146,10 @@ class VentanaPrincipal(QMainWindow):
     def updateHBLStatus(self):
         if isHBLrunning():
             self.setStatus(Estados.CORRIENDO)
+        
+                
         else:
-            self.setStatus(Estados.DETENIDO)
-            
-
+                self.setStatus(Estados.DETENIDO)
     def iniciarTimerStatus(self):
         # Configuración del temporizador
         
@@ -156,17 +160,20 @@ class VentanaPrincipal(QMainWindow):
         self.timer.stop()  
 
     def setStatus(self, statusName):
-        if statusName == Estados.CORRIENDO:
-            self.ui.startButton.setEnabled(False)
-            self.ui.stopButton.setEnabled(True)
-            self.ui.resetButton.setEnabled(True)
-            self.tray.changeStatus('Corriendo')
-            self.ui.status_lineEdit.setText('Corriendo')
-        elif statusName == Estados.DETENIDO: 
-            self.ui.startButton.setEnabled(True)
-            self.ui.stopButton.setEnabled(False)
-            self.ui.resetButton.setEnabled(False)
-            self.tray.changeStatus('Detenido')
-            self.ui.status_lineEdit.setText('Detenido')
-        elif statusName == Estados.REINICIANDO:
-            pass
+        if statusName != self.status:
+            self.status = statusName
+            time = datetime.now().strftime("%H:%M:%S %Y-%m-%d ")
+            if statusName == Estados.CORRIENDO:
+                self.ui.startButton.setEnabled(False)
+                self.ui.stopButton.setEnabled(True)
+                self.ui.resetButton.setEnabled(True)
+                self.tray.changeStatus('Corriendo')
+                self.ui.status_lineEdit.setText(f'Corriendo {time} ')
+            elif statusName == Estados.DETENIDO: 
+                self.ui.startButton.setEnabled(True)
+                self.ui.stopButton.setEnabled(False)
+                self.ui.resetButton.setEnabled(False)
+                self.tray.changeStatus('Detenido')
+                self.ui.status_lineEdit.setText(f'Detenido {time} ')
+            elif statusName == Estados.ERROR:
+                pass

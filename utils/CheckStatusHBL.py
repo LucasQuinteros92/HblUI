@@ -46,3 +46,12 @@ def getHBLpid():
                 
 
         return ret
+
+def checkErrors(hblPath):
+        ret = None
+        if os.path.exists(hblPath + '/logs/error.log'):
+                if os.path.getsize(hblPath + '/logs/error.log'):
+                        with open(hblPath + '/logs/error.log', 'r') as f:
+                                ret = f.read()
+                
+        return ret
