@@ -5,6 +5,8 @@ import os
 
 
 def enableStartOnBoot(path):
+    if not os.path.exists('/home/pi/.config/autostart'):
+        os.mkdir('/home/pi/.config/autostart')
     with open('/home/pi/.config/autostart/Start.desktop', 'w') as f:
         f.writelines(['[Desktop Entry]\n',
                     'Name=HBL\n',
@@ -37,6 +39,8 @@ def isStartOnBootEnabled(path):
     return ret
 
 def enableKioscMode(url):
+    if not os.path.exists('/home/pi/.config/autostart'):
+        os.mkdir('/home/pi/.config/autostart')
     with open('/home/pi/.config/lxsession/LXDE-pi/autostart', 'w') as f:
         f.writelines(['@lxpanel --profile LXDE-pi\n',
                     '@pcmanfm --desktop --profile LXDE-pi\n',
@@ -52,8 +56,9 @@ def disableKioscMode():
 
 def isKioscModeEnabled():
     ret = False
+    
     if os.path.exists('/home/pi/.config/lxsession/LXDE-pi/autostart'):
-        with open('/home/pi/.config/autostart/Start.desktop', 'r') as f:
+        with open('/home/pi/.config/lxsession/LXDE-pi/autostart', 'r') as f:
 
                 lines = f.readlines()
                 
