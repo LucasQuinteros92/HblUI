@@ -46,7 +46,7 @@ gevent-websocket==0.10.1
 gpiozero==1.6.2
 greenlet==2.0.2
 guizero==0.6.0
-h11==0.14.0
+h11==0.16.0
 html5lib==1.0.1
 idna==2.6
 importlib-metadata==6.7.0
