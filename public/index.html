@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Prueba</title>
+    <!-- Incluir jQuery desde CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenido a la Página de Prueba</h1>
+    <p id="message">Este es un párrafo de prueba. Haga clic en el botón para cambiar este texto.</p>
+    <button id="changeTextButton">Cambiar Texto</button>
+
+    <script>
+        $(document).ready(function() {
+            $('#changeTextButton').click(function() {
+                $('#message').text('El texto ha sido cambiado con éxito!');
+            });
+        });
+    </script>
+</body>
+</html>

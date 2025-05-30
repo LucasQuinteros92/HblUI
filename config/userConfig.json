@@ -1,6 +1,6 @@
 {
-    "hblPath": "/home/pi/Desktop/HblChile",
+    "hblPath": "/home/pi/Desktop/Hbl3.0",
     "startOnBoot": true,
-    "kioskMode": false,
+    "kioskMode": true,
     "kioskURL": "https://www.google.com"
 }

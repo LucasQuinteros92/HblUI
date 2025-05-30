@@ -45,14 +45,18 @@ def enableKioscMode(url):
         f.writelines(['@lxpanel --profile LXDE-pi\n',
                     '@pcmanfm --desktop --profile LXDE-pi\n',
                     'point-rpi\n',
-                    f'@chromium --kiosk --noerrdialogs --disable-infobars --no-first-run --ozone-platform=wayland --enable-features=OverlayScrollbar --start-maximized {url}\n'])
+                    '',
+                    f'@chromium-browser --kiosk --noerrdialogs --disable-pinch --disable-infobars --disable-translate --disable-features=TranslateUI --no-first-run --enable-features=OverlayScrollbar --start-maximized {url}\n'])
+    with open('/home/pi/.config/pcmanfm/LXDE-pi/desktop-items-0.conf', 'r') as f:
+        lines = f.readlines()
+    
 
 def disableKioscMode():
     with open('/home/pi/.config/lxsession/LXDE-pi/autostart', 'w') as f:
         f.writelines(['@lxpanel --profile LXDE-pi\n',
                     '@pcmanfm --desktop --profile LXDE-pi\n',
                     'point-rpi\n'])
-
+    
 
 def isKioscModeEnabled():
     ret = False
